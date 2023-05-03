@@ -29,6 +29,7 @@ class AudioTranscriber:
                     print(segment.text)
 
     async def process_audio(self, websocket, path):
+        print('get from websocket')
         async for message in websocket:
             audio_data = np.frombuffer(message, dtype=np.int16)
             is_speech = self.vad_wrapper.is_speech(audio_data.tobytes())
@@ -53,5 +54,5 @@ class AudioTranscriber:
 
     async def start_transcription(self):
         print("Listening...")
-        async with websockets.serve(self.process_audio, "0.0.0.0", 8000):
+        async with websockets.serve(self.process_audio, "0.0.0.0", 8080):
             await self.transcribe_audio()
